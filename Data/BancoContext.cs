@@ -18,6 +18,7 @@ public class BancoContext : DbContext
         mb.Entity<Conta>().Property(c => c.Saldo).HasPrecision(12, 2);
         mb.Entity<Conta>().HasIndex(c => c.Numero).IsUnique();
         mb.Entity<Conta>().HasOne(c => c.Cliente).WithMany(c => c.Contas).HasForeignKey(c => c.ClienteId);
+         mb.Entity<Transacao>().Property(t => t.Valor).HasPrecision(12, 2);
 
     }
 }
