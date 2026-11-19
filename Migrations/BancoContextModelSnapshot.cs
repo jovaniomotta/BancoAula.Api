@@ -39,6 +39,20 @@ namespace BancoAula.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Agencias");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Cidade = "Campo Grande",
+                            Nome = "Centro"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Cidade = "Campo Grande",
+                            Nome = "Moreninhas"
+                        });
                 });
 
             modelBuilder.Entity("Cliente", b =>
@@ -70,6 +84,22 @@ namespace BancoAula.Api.Migrations
                         .IsUnique();
 
                     b.ToTable("Clientes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Cidade = "Campo Grande",
+                            Cpf = "11111111111",
+                            Nome = "João da Silva"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Cidade = "Campo Grande",
+                            Cpf = "22222222222",
+                            Nome = "Maria Oliveira"
+                        });
                 });
 
             modelBuilder.Entity("Conta", b =>
@@ -110,6 +140,45 @@ namespace BancoAula.Api.Migrations
                         .IsUnique();
 
                     b.ToTable("Contas");
+                });
+
+            modelBuilder.Entity("Emprestimo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DataSolicitacao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DataVencimento")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Prazo")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TaxaJuros")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal>("Valor")
+                        .HasPrecision(12, 2)
+                        .HasColumnType("decimal(12,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClienteId");
+
+                    b.ToTable("Emprestimos");
                 });
 
             modelBuilder.Entity("Transacao", b =>
@@ -160,6 +229,17 @@ namespace BancoAula.Api.Migrations
                         .IsRequired();
 
                     b.Navigation("Agencia");
+
+                    b.Navigation("Cliente");
+                });
+
+            modelBuilder.Entity("Emprestimo", b =>
+                {
+                    b.HasOne("Cliente", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Cliente");
                 });
