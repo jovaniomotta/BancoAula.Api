@@ -3,12 +3,12 @@
 
 GET {{host}}
 ###
-GET {{host}}/1
+GET {{host}}/4
 ###
 POST {{host}}
 Content-Type: application/json
  
-{ "clienteId": 2, "numero": 2001, "saldo": 300, "tipo": "Corrente", "ativa": true, "AgenciaId": 1 }
+{  "numero": 2003, "saldo": 300, "tipo": "Corrente", "ativa": true, "clienteId": 2,"AgenciaId": 1 }
 # ###
 # POST {{host}}/50/depositar
 # Content-Type: application/json
