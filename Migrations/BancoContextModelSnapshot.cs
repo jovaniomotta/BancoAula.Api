@@ -236,7 +236,7 @@ namespace BancoAula.Api.Migrations
             modelBuilder.Entity("Emprestimo", b =>
                 {
                     b.HasOne("Cliente", "Cliente")
-                        .WithMany()
+                        .WithMany("Emprestimos")
                         .HasForeignKey("ClienteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -263,6 +263,8 @@ namespace BancoAula.Api.Migrations
             modelBuilder.Entity("Cliente", b =>
                 {
                     b.Navigation("Contas");
+
+                    b.Navigation("Emprestimos");
                 });
 
             modelBuilder.Entity("Conta", b =>

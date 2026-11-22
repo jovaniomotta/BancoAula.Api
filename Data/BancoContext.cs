@@ -10,7 +10,7 @@ public class BancoContext : DbContext
     public DbSet<Agencia> Agencias { get; set; } = null!;
     public DbSet<Conta> Contas { get; set; } = null!;
     public DbSet<Transacao> Transacoes { get; set; } = null!;
-    public DbSet<Emprestimo> Emprestimos { get; set; } = null!;
+    public DbSet<Emprestimo> Emprestimos => Set<Emprestimo>();
     
 
     protected override void OnModelCreating(ModelBuilder mb)

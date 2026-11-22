@@ -13,7 +13,8 @@ public class Cliente{
      public string? Cidade {get; set; }
 
      public List<Conta> Contas {get; set;} = new ();
-
+     
+     public List<Emprestimo> Emprestimos {get; set;} = new ();
 
 
 }
