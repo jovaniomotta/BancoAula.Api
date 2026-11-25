@@ -6,14 +6,33 @@ public class ContaService : IContaService
     {
         _repository = repository;
     }
-    //buscar 1 conta
-    public async Task<ContasDto?> GetPorIdAsync(int id)
-    {
-        var conta = await _repository.GetPorIdAsync(id);
-        if (conta == null)
-            return null;
 
-        return new ContasDto (conta.Numero, conta.Tipo, conta.Saldo, conta.Ativa, conta.ClienteId, conta.AgenciaId );
+    public async Task<ContaResponseDto> SacarAsync(int id, decimal valor)
+    {
+        var conta = await _repository.GetPorIdAsync(id)
+            ?? throw new KeyNotFoundException($"Conta com ID {id} não encontrada.");
+
+        if (conta.Saldo < valor)
+        {
+            throw new SaldoInsuficienteException("Saldo insuficiente para realizar o saque.");
+        }
+
+        conta.Saldo -= valor;
+        await _repository.AtualizarAsync(conta);
+
+       return Mapper(conta);
+
+    }
+
+    //buscar 1 conta
+    public async Task<ContaResponseDto?> GetPorIdAsync(int id)
+    {
+        var conta = await _repository.GetPorIdAsync(id)
+            ?? throw new KeyNotFoundException($"Conta com ID {id} não encontrada.");
+        
+
+        return Mapper(conta);
+
     }
 
     public async Task<List<ContasDto>> GetTodasAsync()
@@ -41,5 +60,16 @@ public class ContaService : IContaService
     public async Task<bool> RemoverAsync(int id)
     {
         return await _repository.RemoveAsync(id);
+    }
+
+    private static ContaResponseDto Mapper(Conta conta)
+    {
+        return new ContaResponseDto
+        {
+           Id = conta.Id,
+           Numero = conta.Numero,
+              Tipo = conta.Tipo,
+              Saldo = conta.Saldo
+        };
     }
 }
