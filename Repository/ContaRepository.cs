@@ -14,9 +14,9 @@ public class ContaRepository : IContaRepository
         return await _context.Contas.ToListAsync<Conta>();
     }
 
-    public async Task<Conta> GetPorIdAsync(int id)
+    public async Task<Conta?> GetPorIdAsync(int id)
     {
-        return (await _context.Contas.FindAsync(id))!;
+        return await _context.Contas.FindAsync(id);
     }
 
     public async Task<Conta> CriarAsync(Conta nova)
@@ -35,5 +35,12 @@ public class ContaRepository : IContaRepository
         _context.Contas.Remove(conta);
         await _context.SaveChangesAsync();
         return true;
+    }
+
+    public async Task<Conta> AtualizarAsync(Conta conta)
+    {
+        _context.Contas.Update(conta);
+        await _context.SaveChangesAsync();
+        return conta;
     }
 }
