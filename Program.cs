@@ -47,6 +47,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IContaService, ContaService>();
 builder.Services.AddScoped<IContaRepository, ContaRepository>();
+builder.Services.AddScoped<TokenService>();
 
 var app = builder.Build();
 app.UseMiddleware<ErroMiddleware>();

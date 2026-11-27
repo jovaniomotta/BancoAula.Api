@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,8 +16,8 @@ public class ContasController : ControllerBase
         _service = service;
     }
 
-
-    [HttpGet]
+    [AllowAnonymous]
+    [HttpGet("publico")]
     public async Task<ActionResult<List<ContaResponseDto>>> Get() => Ok(_service.GetTodasAsync());
     
         
@@ -54,7 +56,7 @@ public class ContasController : ControllerBase
     //     conta.Ativa = dados.Ativa;
     //     return NoContent();
     // }
-
+    [Authorize(Roles = "Gerente")]
         [HttpDelete("{id:int}")]
     public async Task<IActionResult> Remover(int id){
         var conta = await _service.RemoverAsync(id);
